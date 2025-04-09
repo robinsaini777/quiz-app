@@ -1,5 +1,5 @@
 import React from 'react';
-import './Result.css';
+import '../styles/Result.css';
 
 const Result = ({ scoreData, onRestart }) => {
   if (!scoreData) return null;

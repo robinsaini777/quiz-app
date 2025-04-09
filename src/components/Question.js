@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import './Question.css';
+import React, { useEffect, useState, useCallback } from 'react';
+import '../styles/Question.css';
 import questions from '../data/questions';
 import Timer from './Timer';
 
@@ -12,7 +12,19 @@ const Question = ({ setQuizEnd, setScoreData }) => {
 
   const currentQuestion = questions[currentQ];
 
-  // Timer logic
+  // ✅ Callback to go to next question or end quiz
+  const handleNext = useCallback(() => {
+    if (currentQ + 1 < questions.length) {
+      setCurrentQ(prev => prev + 1);
+      setSelected(null);
+      setTimeLeft(30);
+    } else {
+      setScoreData({ score, results });
+      setQuizEnd(true);
+    }
+  }, [currentQ, results, score, setQuizEnd, setScoreData]); 
+
+
   useEffect(() => {
     if (timeLeft === 0) {
       handleNext();
@@ -24,8 +36,9 @@ const Question = ({ setQuizEnd, setScoreData }) => {
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, [timeLeft]);
+  }, [timeLeft, handleNext]); 
 
+  // ✅ Handle selecting an answer
   const handleOptionClick = (option) => {
     setSelected(option);
     const isCorrect = option === currentQuestion.answer;
@@ -46,17 +59,6 @@ const Question = ({ setQuizEnd, setScoreData }) => {
     setResults(updatedResults);
   };
 
-  const handleNext = () => {
-    if (currentQ + 1 < questions.length) {
-      setCurrentQ(prev => prev + 1);
-      setSelected(null);
-      setTimeLeft(30);
-    } else {
-      setScoreData({ score, results });
-      setQuizEnd(true);
-    }
-  };
-
   return (
     <div className="question-container">
       <div className="question-header">
@@ -72,7 +74,13 @@ const Question = ({ setQuizEnd, setScoreData }) => {
         {currentQuestion.options.map((option, i) => (
           <button
             key={i}
-            className={`option-btn ${selected === option ? (option === currentQuestion.answer ? 'correct' : 'wrong') : ''}`}
+            className={`option-btn ${
+              selected === option
+                ? option === currentQuestion.answer
+                  ? 'correct'
+                  : 'wrong'
+                : ''
+            }`}
             onClick={() => handleOptionClick(option)}
             disabled={!!selected}
           >

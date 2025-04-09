@@ -1,0 +1,41 @@
+.header {
+    padding: 16px 24px;
+    background: linear-gradient(135deg, #007bff, #0056b3); /* Light mode */
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 0 0 16px 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+    transition: background 0.3s ease;
+  }
+  
+  .dark-mode .header {
+    background: linear-gradient(135deg, #00aaff, #0088cc); /* Dark mode */
+  }
+  
+  .logo {
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+  }
+  
+  .toggle-theme-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background 0.3s ease;
+  }
+  
+  .toggle-theme-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+  

@@ -1,25 +1,38 @@
-import logo from './logo.svg';
+// src/App.js
+import React, { useState } from 'react';
 import './App.css';
+import Header from './components/Header';
+import Question from './components/Question';
+import Result from './components/Result';
+import { ThemeProvider, useTheme } from './themeContext';
 
-function App() {
+const AppContent = () => {
+  const [quizEnd, setQuizEnd] = useState(false);
+  const [scoreData, setScoreData] = useState(null);
+
+  const { theme, toggleTheme } = useTheme(); // ✅ Access context
+
+  const handleRestart = () => {
+    setQuizEnd(false);
+    setScoreData(null);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={`app ${theme}-mode`}>
+      <Header theme={theme} toggleTheme={toggleTheme} /> {/* ✅ Pass props */}
+      {!quizEnd ? (
+        <Question setQuizEnd={setQuizEnd} setScoreData={setScoreData} />
+      ) : (
+        <Result scoreData={scoreData} onRestart={handleRestart} />
+      )}
     </div>
   );
-}
+};
+
+const App = () => (
+  <ThemeProvider>
+    <AppContent />
+  </ThemeProvider>
+);
 
 export default App;
